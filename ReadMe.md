@@ -71,26 +71,3 @@ $ show databases;
 # Edumateを選択する
 $ use edumate;
 ```
-DBのテーブルが追加されているかチェック
-
-```bash
-$ show tables;
-> +-------------------+
-> | Tables_in_edumate |
-> +-------------------+
-> | user              |
-> +-------------------+
-
-$ show columns from user;
-+------------+---------------------+------+-----+-------------------+-----------------------------+
-| Field      | Type                | Null | Key | Default           | Extra                       |
-+------------+---------------------+------+-----+-------------------+-----------------------------+
-| id         | bigint(20) unsigned | NO   | PRI | <null>            | auto_increment              |
-| username   | varchar(255)        | NO   | UNI | <null>            |                             |
-| password   | varchar(255)        | NO   |     | <null>            |                             |
-| email      | varchar(255)        | NO   | UNI | <null>            |                             |
-| school_id  | varchar(255)        | NO   |     | <null>            |                             |
-| updated_at | timestamp           | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
-| created_at | timestamp           | NO   |     | CURRENT_TIMESTAMP |                             |
-+------------+---------------------+------+-----+-------------------+-----------------------------+
-```
