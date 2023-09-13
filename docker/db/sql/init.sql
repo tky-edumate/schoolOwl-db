@@ -94,3 +94,13 @@ CREATE TABLE `page_detail`(
     FOREIGN KEY (`confirm_teacher_id`) REFERENCES `teacher`(`id`),
     FOREIGN KEY (`page_id`) REFERENCES `page_view`(`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+CREATE TABLE discussion_title (
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `discussion_title` VARCHAR(255) NOT NULL,
+    `discussion_expire_date` TIMESTAMP NOT NULL,
+    `page_id` BIGINT(20) UNSIGNED NOT NULL,
+    `rank` SMALLINT UNSIGNED,
+    `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`page_id`) REFERENCES `page_view`(`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
