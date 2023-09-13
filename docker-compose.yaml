@@ -11,6 +11,7 @@ services:
     platform: linux/amd64
     container_name: edumate_db_container
     environment:
+      MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE:      edumate
       MYSQL_USER:          edumate
       MYSQL_PASSWORD:      edustudent

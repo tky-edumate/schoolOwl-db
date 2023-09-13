@@ -12,10 +12,14 @@ Mysqlを使いやすくするツール
 # Python3が必要
 $ pip3 install mycli
 ```
+### Macの場合
 ```bash
-# Macの場合
+# Homebrewが必要
 $ brew install mycli
 ```
+
+
+
 
 https://www.mycli.net/install を参考
 
@@ -32,6 +36,20 @@ $ docker compose up -d
 
 ## 起動するまで待機
 $ docker logs -f edumate_db_container
+
+これが表示されればOK.
+> ...
+> edumate_db_container  | Version: '5.7.42'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server (GPL)
 ```
 
+### データベースに接続
+```bash
+# Mycliを通して接続
+$ mycli -uedumate -pedustudent -P 13306
 
+> mycli 1.27.0
+> Home: http://mycli.net
+> Bug tracker: https://github.com/dbcli/mycli/issues
+> Thanks to the contributor - Seamile
+> MySQL edumate@localhost:(none)>
+```
