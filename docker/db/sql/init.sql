@@ -1,8 +1,9 @@
 DROP TABLE IF EXISTS `page_detail`;
-DROP TABLE IF EXISTS `page_view`;
+DROP TABLE IF EXISTS `page`;
+DROP TABLE IF EXISTS `discussion`;
 DROP TABLE IF EXISTS `teacher_detail`;
 DROP TABLE IF EXISTS `teacher`;
-DROP TABLE IF EXISTS `group_detail`;
+DROP TABLE IF EXISTS `student_group_detail`;
 DROP TABLE IF EXISTS `student_group`;
 DROP TABLE IF EXISTS `student_detail`;
 DROP TABLE IF EXISTS `student`;
@@ -43,7 +44,7 @@ CREATE TABLE `student_group` (
     FOREIGN KEY (`school_id`) REFERENCES `school`(`id`),
     FOREIGN KEY (`student_id`) REFERENCES `student`(`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
-CREATE TABLE `group_detail`(
+CREATE TABLE `student_group_detail`(
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `group_id` BIGINT(20) UNSIGNED NOT NULL,
     `group_name` VARCHAR(255) NOT NULL,
@@ -71,14 +72,25 @@ CREATE TABLE `teacher_detail` (
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (`teacher_id`) REFERENCES `teacher`(`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
-CREATE TABLE `page_view` (
+CREATE TABLE `discussion` (
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `discussion_title` VARCHAR(255) NOT NULL,
+    `discussion_expire_date` TIMESTAMP NOT NULL,
+    `rank` SMALLINT UNSIGNED,
+    `status` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+    `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+CREATE TABLE `page` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `school_id` BIGINT(20) UNSIGNED NOT NULL,
     `group_id` BIGINT(20) UNSIGNED NOT NULL,
+    `discussion_id` BIGINT(20) UNSIGNED NOT NULL,
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (`school_id`) REFERENCES `school`(`id`),
-    FOREIGN KEY (`group_id`) REFERENCES `student_group`(`id`)
+    FOREIGN KEY (`group_id`) REFERENCES `student_group`(`id`),
+    FOREIGN KEY (`discussion_id`) REFERENCES `discussion`(`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 CREATE TABLE `page_detail`(
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -92,15 +104,5 @@ CREATE TABLE `page_detail`(
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (`confirm_teacher_id`) REFERENCES `teacher`(`id`),
-    FOREIGN KEY (`page_id`) REFERENCES `page_view`(`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
-CREATE TABLE discussion_title (
-    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `discussion_title` VARCHAR(255) NOT NULL,
-    `discussion_expire_date` TIMESTAMP NOT NULL,
-    `page_id` BIGINT(20) UNSIGNED NOT NULL,
-    `rank` SMALLINT UNSIGNED,
-    `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (`page_id`) REFERENCES `page_view`(`id`)
+    FOREIGN KEY (`page_id`) REFERENCES `page`(`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
