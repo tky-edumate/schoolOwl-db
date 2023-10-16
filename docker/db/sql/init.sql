@@ -226,13 +226,17 @@ CREATE TABLE `answer` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
     `problem_id` BIGINT(20) NOT NULL,
     `student_id` BIGINT(20) NOT NULL,
-    `answer_text` text NOT NULL,
+    `answer_text` text,
+    `answer_id` BIGINT(20),
     `solve_second` int NOT NULL,
+    `is_correct` SMALLINT NOT NULL,
+    `is_descriptive` SMALLINT NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`problem_id`) REFERENCES `problem`(`id`),
-    FOREIGN KEY (`student_id`) REFERENCES `student`(`id`)
+    FOREIGN KEY (`student_id`) REFERENCES `student`(`id`),
+    FOREIGN KEY (`answer_id`) REFERENCES `problem_option`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `answer_advise` (
