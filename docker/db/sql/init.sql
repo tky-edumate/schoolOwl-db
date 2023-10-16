@@ -21,8 +21,8 @@ DROP TABLE IF EXISTS `school`;
 
 CREATE TABLE `school` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `name` varchar(255) NOT NULL,
-    `subscription` varchar(255) NOT NULL,
+    `name` TEXT NOT NULL,
+    `subscription` TEXT NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
@@ -31,9 +31,9 @@ CREATE TABLE `school` (
 CREATE TABLE `school_detail` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
     `school_id` BIGINT(20) NOT NULL,
-    `address` varchar(255) NOT NULL,
-    `phone` varchar(255) NOT NULL,
-    `website` varchar(255) NOT NULL,
+    `address` TEXT NOT NULL,
+    `phone` TEXT NOT NULL,
+    `website` TEXT NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -44,8 +44,8 @@ CREATE TABLE `school_detail` (
 CREATE TABLE `teacher` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
     `school_id` BIGINT(20) NOT NULL,
-    `email` varchar(255) NOT NULL,
-    `password` varchar(255) NOT NULL,
+    `email` TEXT NOT NULL,
+    `password` TEXT NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -55,9 +55,9 @@ CREATE TABLE `teacher` (
 CREATE TABLE `teacher_detail` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
     `teacher_id` BIGINT(20) NOT NULL,
-    `name` varchar(255) NOT NULL,
-    `phone` varchar(255) NOT NULL,
-    `admin` tinyint(1) NOT NULL DEFAULT '0',
+    `name` TEXT NOT NULL,
+    `phone` TEXT NOT NULL,
+    `admin` TINYINT NOT NULL DEFAULT '0',
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -66,7 +66,7 @@ CREATE TABLE `teacher_detail` (
 
 CREATE TABLE `curriculum` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `name` varchar(255) NOT NULL,
+    `name` TEXT NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
@@ -75,8 +75,8 @@ CREATE TABLE `curriculum` (
 CREATE TABLE `curriculum_detail` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
     `curriculum_id` BIGINT(20) NOT NULL,
-    `name` varchar(255) NOT NULL,
-    `subject` varchar(255) NOT NULL,
+    `name` TEXT NOT NULL,
+    `subject` TEXT NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -86,8 +86,8 @@ CREATE TABLE `curriculum_detail` (
 CREATE TABLE `student` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
     `school_id` BIGINT(20) NOT NULL,
-    `email` varchar(255) NOT NULL,
-    `password` varchar(255) NOT NULL,
+    `email` TEXT NOT NULL,
+    `password` TEXT NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -97,8 +97,8 @@ CREATE TABLE `student` (
 CREATE TABLE `student_detail` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
     `student_id` BIGINT(20) NOT NULL,
-    `name` varchar(255) NOT NULL,
-    `phone` varchar(255) NOT NULL,
+    `name` TEXT NOT NULL,
+    `phone` TEXT NOT NULL,
     `grade` SMALLINT NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -110,7 +110,7 @@ CREATE TABLE `student_detail` (
 CREATE TABLE `class` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
     `school_id` BIGINT(20) NOT NULL,
-    `name` varchar(255) NOT NULL,
+    `name` TEXT NOT NULL,
     `grade` SMALLINT NOT NULL,
     `teacher_id` BIGINT(20) NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -133,7 +133,7 @@ CREATE TABLE `class_students` (
 
 CREATE TABLE `exam` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `name` varchar(255) NOT NULL,
+    `name` TEXT NOT NULL,
     `curriculum_id` BIGINT(20) NOT NULL,
     `school_id` BIGINT(20) NOT NULL,
     `teacher_id` BIGINT(20) NOT NULL,
@@ -217,7 +217,7 @@ CREATE TABLE `problem_detail` (
 CREATE TABLE `problem_option` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
     `problem_id` BIGINT(20) NOT NULL,
-    `option_text` varchar(255) NOT NULL,
+    `option_text` TEXT NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`problem_id`) REFERENCES `problem`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
