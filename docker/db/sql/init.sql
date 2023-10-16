@@ -24,7 +24,7 @@ CREATE TABLE `school` (
     `name` varchar(255) NOT NULL,
     `subscription` varchar(255) NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -35,7 +35,7 @@ CREATE TABLE `school_detail` (
     `phone` varchar(255) NOT NULL,
     `website` varchar(255) NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`school_id`) REFERENCES `school`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -47,7 +47,7 @@ CREATE TABLE `teacher` (
     `email` varchar(255) NOT NULL,
     `password` varchar(255) NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`school_id`) REFERENCES `school`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -59,7 +59,7 @@ CREATE TABLE `teacher_detail` (
     `phone` varchar(255) NOT NULL,
     `admin` tinyint(1) NOT NULL DEFAULT '0',
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`teacher_id`) REFERENCES `teacher`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -68,7 +68,7 @@ CREATE TABLE `curriculum` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `name` varchar(255) NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -78,7 +78,7 @@ CREATE TABLE `curriculum_detail` (
     `name` varchar(255) NOT NULL,
     `subject` varchar(255) NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`curriculum_id`) REFERENCES `curriculum`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -89,7 +89,7 @@ CREATE TABLE `student` (
     `email` varchar(255) NOT NULL,
     `password` varchar(255) NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`school_id`) REFERENCES `school`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -101,7 +101,7 @@ CREATE TABLE `student_detail` (
     `phone` varchar(255) NOT NULL,
     `grade` SMALLINT NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`student_id`) REFERENCES `student`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -114,7 +114,7 @@ CREATE TABLE `class` (
     `grade` SMALLINT NOT NULL,
     `teacher_id` int(11) NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`school_id`) REFERENCES `school`(`id`),
     FOREIGN KEY (`teacher_id`) REFERENCES `teacher`(`id`)
@@ -125,7 +125,7 @@ CREATE TABLE `class_students` (
     `class_id` int(11) NOT NULL,
     `student_id` int(11) NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`class_id`) REFERENCES `class`(`id`),
     FOREIGN KEY (`student_id`) REFERENCES `student`(`id`)
@@ -141,7 +141,7 @@ CREATE TABLE `exam` (
     `exam_type` SMALLINT NOT NULL,
     `is_private` SMALLINT NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`curriculum_id`) REFERENCES `curriculum`(`id`),
     FOREIGN KEY (`school_id`) REFERENCES `school`(`id`),
@@ -157,7 +157,7 @@ CREATE TABLE `exam_detail` (
     `duration` int(11) NOT NULL,
     `passing_score` int(11) NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`exam_id`) REFERENCES `exam`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -171,7 +171,7 @@ CREATE TABLE `student_score` (
     `score` SMALLINT NOT NULL,
     `accuracy_rate` SMALLINT NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`student_id`) REFERENCES `student`(`id`),
     FOREIGN KEY (`curriculum_id`) REFERENCES `curriculum`(`id`),
@@ -194,7 +194,7 @@ CREATE TABLE `exam_problem` (
     `problem_id` int(11) NOT NULL,
     `score` SMALLINT NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`exam_id`) REFERENCES `exam`(`id`),
     FOREIGN KEY (`problem_id`) REFERENCES `problem`(`id`)
@@ -229,7 +229,7 @@ CREATE TABLE `answer` (
     `answer_text` text NOT NULL,
     `solve_second` int NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`problem_id`) REFERENCES `problem`(`id`),
     FOREIGN KEY (`student_id`) REFERENCES `student`(`id`)
@@ -239,6 +239,8 @@ CREATE TABLE `answer_advise` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `answer_id` int(11) NOT NULL,
     `advise` text NOT NULL,
+    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`answer_id`) REFERENCES `answer`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
