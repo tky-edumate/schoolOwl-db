@@ -208,6 +208,7 @@ CREATE TABLE `problem_detail` (
     `wrong_answer_cnt` INT(11) NOT NULL,
     `correct_answer_cnt` INT(11) NOT NULL,
     `solved_cnt` INT(11) NOT NULL,
+    `solved_avg_second` INT(11) NOT NULL,
     `correct_answer_id` int(11),
     PRIMARY KEY (`id`),
     FOREIGN KEY (`problem_id`) REFERENCES `problem`(`id`)
@@ -225,9 +226,8 @@ CREATE TABLE `answer` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `problem_id` int(11) NOT NULL,
     `student_id` int(11) NOT NULL,
-    `answer` varchar(255) NOT NULL,
+    `answer_text` text NOT NULL,
     `solve_second` int NOT NULL,
-    `accuracy_rate` int NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
