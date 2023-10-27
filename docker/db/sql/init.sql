@@ -1,111 +1,66 @@
-
-DROP TABLE IF EXISTS `answer_advise`;
-DROP TABLE IF EXISTS `answer`;
-DROP TABLE IF EXISTS `problem_option`;
-DROP TABLE IF EXISTS `problem_detail`;
-DROP TABLE IF EXISTS `problem`;
-DROP TABLE IF EXISTS `student_score`;
-DROP TABLE IF EXISTS `exam_problem`;
-DROP TABLE IF EXISTS `exam_detail`;
-DROP TABLE IF EXISTS `exam`;
-DROP TABLE IF EXISTS `class_students`;
-DROP TABLE IF EXISTS `class`;
-DROP TABLE IF EXISTS `student_detail`;
-DROP TABLE IF EXISTS `student`;
-DROP TABLE IF EXISTS `curriculum_detail`;
-DROP TABLE IF EXISTS `curriculum`;
-DROP TABLE IF EXISTS `teacher_detail`;
-DROP TABLE IF EXISTS `teacher`;
-DROP TABLE IF EXISTS `school_detail`;
-DROP TABLE IF EXISTS `school`;
-
 CREATE TABLE `school` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
     `name` TEXT NOT NULL,
+    `address` TEXT NOT NULL,
+    `phone` TEXT NOT NULL,
+    `registration_code` TEXT NOT NULL,
     `subscription` TEXT NOT NULL,
+    `is_active` TINYINT NOT NULL DEFAULT '0',
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `school_detail` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `school_id` BIGINT(20) NOT NULL,
-    `address` TEXT NOT NULL,
-    `phone` TEXT NOT NULL,
-    `website` TEXT NOT NULL,
-    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`school_id`) REFERENCES `school`(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-CREATE TABLE `teacher` (
+CREATE TABLE `waiting_account` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
     `school_id` BIGINT(20) NOT NULL,
     `email` TEXT NOT NULL,
     `password` TEXT NOT NULL,
+    `type` SMALLINT NOT NULL,
+    `name` TEXT NOT NULL,
+    `phone` TEXT NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `account` (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `email` TEXT NOT NULL,
+    `password` TEXT NOT NULL,
+    `account_type` SMALLINT NOT NULL,
+    `is_active` TINYINT NOT NULL DEFAULT '0',
+)
+
+CREATE TABLE `teacher` (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `school_id` BIGINT(20) NOT NULL,
+    `admin` TINYINT NOT NULL DEFAULT '0',
+    `name` TEXT NOT NULL,
+    `phone` TEXT NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`school_id`) REFERENCES `school`(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `teacher_detail` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `teacher_id` BIGINT(20) NOT NULL,
-    `name` TEXT NOT NULL,
-    `phone` TEXT NOT NULL,
-    `admin` TINYINT NOT NULL DEFAULT '0',
-    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`teacher_id`) REFERENCES `teacher`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `curriculum` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
     `name` TEXT NOT NULL,
+    `subject` TEXT NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `curriculum_detail` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `curriculum_id` BIGINT(20) NOT NULL,
-    `name` TEXT NOT NULL,
-    `subject` TEXT NOT NULL,
-    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`curriculum_id`) REFERENCES `curriculum`(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE `student` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
     `school_id` BIGINT(20) NOT NULL,
-    `email` TEXT NOT NULL,
-    `password` TEXT NOT NULL,
-    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`school_id`) REFERENCES `school`(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `student_detail` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `student_id` BIGINT(20) NOT NULL,
     `name` TEXT NOT NULL,
     `phone` TEXT NOT NULL,
     `grade` SMALLINT NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`student_id`) REFERENCES `student`(`id`)
+    FOREIGN KEY (`school_id`) REFERENCES `school`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 CREATE TABLE `class` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
@@ -134,34 +89,31 @@ CREATE TABLE `class_students` (
 CREATE TABLE `exam` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
     `name` TEXT NOT NULL,
-    `curriculum_id` BIGINT(20) NOT NULL,
-    `school_id` BIGINT(20) NOT NULL,
-    `teacher_id` BIGINT(20) NOT NULL,
-    `class_id` BIGINT(20) NOT NULL,
-    `exam_type` SMALLINT NOT NULL,
-    `is_private` SMALLINT NOT NULL,
-    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`curriculum_id`) REFERENCES `curriculum`(`id`),
-    FOREIGN KEY (`school_id`) REFERENCES `school`(`id`),
-    FOREIGN KEY (`teacher_id`) REFERENCES `teacher`(`id`),
-    FOREIGN KEY (`class_id`) REFERENCES `class`(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `exam_detail` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `exam_id` BIGINT(20) NOT NULL,
+    `school_id` BIGINT(20),
+    `teacher_id` BIGINT(20),
+    `exam_type` TINYINT NOT NULL,
     `start_time` datetime NOT NULL,
     `end_time` datetime NOT NULL,
     `duration` BIGINT(20) NOT NULL,
     `passing_score` BIGINT(20) NOT NULL,
+    `is_perpetual` TINYINT NOT NULL DEFAULT '0',
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`exam_id`) REFERENCES `exam`(`id`)
+    FOREIGN KEY (`school_id`) REFERENCES `school`(`id`),
+    FOREIGN KEY (`teacher_id`) REFERENCES `teacher`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `exam_curriculum` (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `exam_id` BIGINT(20) NOT NULL,
+    `curriculum_id` BIGINT(20) NOT NULL,
+    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`exam_id`) REFERENCES `exam`(`id`),
+    FOREIGN KEY (`curriculum_id`) REFERENCES `curriculum`(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `student_score` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
@@ -178,11 +130,32 @@ CREATE TABLE `student_score` (
     FOREIGN KEY (`exam_id`) REFERENCES `exam`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+CREATE TABLE `class_score` (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `class_id` BIGINT(20) NOT NULL,
+    `curriculum_id` BIGINT(20) NOT NULL,
+    `exam_id` BIGINT(20) NOT NULL,
+    `score` SMALLINT NOT NULL,
+    `accuracy_rate` SMALLINT NOT NULL,
+    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`class_id`) REFERENCES `class`(`id`),
+    FOREIGN KEY (`curriculum_id`) REFERENCES `curriculum`(`id`),
+    FOREIGN KEY (`problem_id`) REFERENCES `problem`(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `problem` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
     `curriculum_id` BIGINT(20) NOT NULL,
     `problem_type` SMALLINT NOT NULL,
-    `is_private` SMALLINT NOT NULL,
+    `last_author_id` BIGINT(20) NOT NULL,
+    `is_opened` TINYINT NOT NULL,
+    `is_public` TINYINT NOT NULL,
+    `status` TINYINT NOT NULL,
+    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`curriculum_id`) REFERENCES `curriculum`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -248,3 +221,16 @@ CREATE TABLE `answer_advise` (
     PRIMARY KEY (`id`),
     FOREIGN KEY (`answer_id`) REFERENCES `answer`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `todo` (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `user_id` BIGINT(20) NOT NULL,
+    `title` TEXT NOT NULL,
+    `content` TEXT NOT NULL,
+    `is_done` SMALLINT NOT NULL,
+    `is_student` SMALLINT NOT NULL,
+    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
