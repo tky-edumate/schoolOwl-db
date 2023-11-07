@@ -1,8 +1,6 @@
 CREATE TABLE `school` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
-    `address` TEXT NOT NULL,
-    `phone` VARCHAR(255) NOT NULL,
     `registration_code` VARCHAR(255) NOT NULL,
     `subscription` TINYINT UNSIGNED NOT NULL,
     `is_active` TINYINT UNSIGNED NOT NULL DEFAULT '0',
