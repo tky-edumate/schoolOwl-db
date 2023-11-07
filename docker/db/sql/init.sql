@@ -1,21 +1,21 @@
 CREATE TABLE `school` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `name` TEXT NOT NULL,
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL,
     `address` TEXT NOT NULL,
-    `phone` TEXT NOT NULL,
-    `registration_code` TEXT NOT NULL,
-    `subscription` TEXT NOT NULL,
-    `is_active` TINYINT NOT NULL DEFAULT '0',
+    `phone` VARCHAR(255) NOT NULL,
+    `registration_code` VARCHAR(255) NOT NULL,
+    `subscription` TINYINT UNSIGNED NOT NULL,
+    `is_active` TINYINT UNSIGNED NOT NULL DEFAULT '0',
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `class` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `school_id` BIGINT(20) NOT NULL,
-    `name` TEXT NOT NULL,
-    `grade` SMALLINT NOT NULL,
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `school_id` BIGINT(20) UNSIGNED NOT NULL,
+    `name` VARCHAR(255) NOT NULL,
+    `grade` SMALLINT UNSIGNED NOT NULL,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -23,12 +23,12 @@ CREATE TABLE `class` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `waiting_account` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `school_id` BIGINT(20) NOT NULL,
-    `email` TEXT NOT NULL,
-    `password` TEXT NOT NULL,
-    `name` TEXT NOT NULL,
-    `account_type` SMALLINT NOT NULL,
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `school_id` BIGINT(20) UNSIGNED NOT NULL,
+    `email` VARCHAR(255) NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
+    `name` VARCHAR(255) NOT NULL,
+    `account_type` SMALLINT UNSIGNED NOT NULL,
     `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -36,23 +36,25 @@ CREATE TABLE `waiting_account` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `account` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `email` TEXT NOT NULL,
-    `password` TEXT NOT NULL,
-    `name` TEXT NOT NULL,
-    `account_type` SMALLINT NOT NULL,
-    `is_active` TINYINT NOT NULL DEFAULT '0',
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `school_id` BIGINT(20) UNSIGNED NOT NULL,
+    `email` VARCHAR(255) NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
+    `name` VARCHAR(255) NOT NULL,
+    `account_type` TINYINT UNSIGNED NOT NULL,
+    `is_active` TINYINT UNSIGNED NOT NULL DEFAULT '0',
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`school_id`) REFERENCES `school`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `teacher` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `school_id` BIGINT(20) NOT NULL,
-    `class_id` BIGINT(20) NOT NULL,
-    `account_id` BIGINT(20) NOT NULL,
-    `admin` TINYINT NOT NULL DEFAULT '0',
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `school_id` BIGINT(20) UNSIGNED NOT NULL,
+    `class_id` BIGINT(20) UNSIGNED NOT NULL,
+    `account_id` BIGINT(20) UNSIGNED NOT NULL,
+    `admin` TINYINT UNSIGNED NOT NULL DEFAULT '0',
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -61,20 +63,20 @@ CREATE TABLE `teacher` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `curriculum` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `name` TEXT NOT NULL,
-    `subject` TEXT NOT NULL,
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL,
+    `subject` SMALLINT UNSIGNED UNSIGNED NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `student` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `school_id` BIGINT(20) NOT NULL,
-    `class_id` BIGINT(20) NOT NULL,
-    `account_id` BIGINT(20) NOT NULL,
-    `grade` SMALLINT NOT NULL,
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `school_id` BIGINT(20) UNSIGNED NOT NULL,
+    `class_id` BIGINT(20) UNSIGNED NOT NULL,
+    `account_id` BIGINT(20) UNSIGNED NOT NULL,
+    `grade` SMALLINT UNSIGNED NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -85,16 +87,16 @@ CREATE TABLE `student` (
 
 
 CREATE TABLE `exam` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `name` TEXT NOT NULL,
-    `school_id` BIGINT(20),
-    `teacher_id` BIGINT(20),
-    `exam_type` TINYINT NOT NULL,
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL,
+    `school_id` BIGINT(20) UNSIGNED,
+    `teacher_id` BIGINT(20) UNSIGNED,
+    `exam_type` TINYINT UNSIGNED NOT NULL,
     `start_time` datetime NOT NULL,
     `end_time` datetime NOT NULL,
-    `passing_score` BIGINT(20) NOT NULL,
-    `target_accuracy_rate` SMALLINT NOT NULL,
-    `is_perpetual` TINYINT NOT NULL DEFAULT '0',
+    `passing_score` BIGINT(20) UNSIGNED NOT NULL,
+    `target_accuracy_rate` SMALLINT UNSIGNED NOT NULL,
+    `is_perpetual` TINYINT UNSIGNED NOT NULL DEFAULT '0',
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -103,9 +105,9 @@ CREATE TABLE `exam` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `exam_curriculum` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `exam_id` BIGINT(20) NOT NULL,
-    `curriculum_id` BIGINT(20) NOT NULL,
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `exam_id` BIGINT(20) UNSIGNED NOT NULL,
+    `curriculum_id` BIGINT(20) UNSIGNED NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -114,12 +116,12 @@ CREATE TABLE `exam_curriculum` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `student_score` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `student_id` BIGINT(20) NOT NULL,
-    `curriculum_id` BIGINT(20) NOT NULL,
-    `exam_id` BIGINT(20) NOT NULL,
-    `score` SMALLINT NOT NULL,
-    `accuracy_rate` SMALLINT NOT NULL,
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `student_id` BIGINT(20) UNSIGNED NOT NULL,
+    `curriculum_id` BIGINT(20) UNSIGNED NOT NULL,
+    `exam_id` BIGINT(20) UNSIGNED NOT NULL,
+    `score` SMALLINT UNSIGNED NOT NULL,
+    `accuracy_rate` SMALLINT UNSIGNED NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -129,17 +131,17 @@ CREATE TABLE `student_score` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `problem` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `curriculum_id` BIGINT(20) NOT NULL,
-    `problem_type` SMALLINT NOT NULL,
-    `is_public` TINYINT NOT NULL,
-    `status` TINYINT NOT NULL,
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `curriculum_id` BIGINT(20) UNSIGNED NOT NULL,
+    `problem_type` SMALLINT UNSIGNED NOT NULL,
+    `is_public` TINYINT UNSIGNED NOT NULL,
+    `status` TINYINT UNSIGNED NOT NULL,
     `question_text` TEXT NOT NULL,
-    `wrong_answer_cnt` BIGINT(20) NOT NULL,
-    `correct_answer_cnt` BIGINT(20) NOT NULL,
-    `solved_cnt` BIGINT(20) NOT NULL,
-    `solved_avg_second` BIGINT(20) NOT NULL,
-    `correct_answer_id` BIGINT(20),
+    `wrong_answer_cnt` BIGINT(20) UNSIGNED NOT NULL,
+    `correct_answer_cnt` BIGINT(20) UNSIGNED NOT NULL,
+    `solved_cnt` BIGINT(20) UNSIGNED NOT NULL,
+    `solved_avg_second` BIGINT(20) UNSIGNED NOT NULL,
+    `correct_answer_id` BIGINT(20) UNSIGNED,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -147,10 +149,10 @@ CREATE TABLE `problem` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `exam_problem` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `exam_id` BIGINT(20) NOT NULL,
-    `problem_id` BIGINT(20) NOT NULL,
-    `score` SMALLINT NOT NULL,
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `exam_id` BIGINT(20) UNSIGNED NOT NULL,
+    `problem_id` BIGINT(20) UNSIGNED NOT NULL,
+    `score` SMALLINT UNSIGNED NOT NULL,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -159,8 +161,8 @@ CREATE TABLE `exam_problem` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `problem_option` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `problem_id` BIGINT(20) NOT NULL,
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `problem_id` BIGINT(20) UNSIGNED NOT NULL,
     `option_text` TEXT NOT NULL,
     `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -169,14 +171,14 @@ CREATE TABLE `problem_option` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `answer` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `problem_id` BIGINT(20) NOT NULL,
-    `student_id` BIGINT(20) NOT NULL,
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `problem_id` BIGINT(20) UNSIGNED NOT NULL,
+    `student_id` BIGINT(20) UNSIGNED NOT NULL,
     `answer_text` text,
-    `answer_id` BIGINT(20),
+    `answer_id` BIGINT(20) UNSIGNED,
     `solve_second` int NOT NULL,
-    `is_correct` SMALLINT NOT NULL,
-    `is_descriptive` SMALLINT NOT NULL,
+    `is_correct` SMALLINT UNSIGNED NOT NULL,
+    `is_descriptive` SMALLINT UNSIGNED NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -186,8 +188,8 @@ CREATE TABLE `answer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `answer_advise` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `answer_id` BIGINT(20) NOT NULL,
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `answer_id` BIGINT(20) UNSIGNED NOT NULL,
     `advise` text NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
