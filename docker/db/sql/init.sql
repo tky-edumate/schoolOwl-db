@@ -121,7 +121,6 @@ CREATE TABLE `student_score` (
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`student_id`) REFERENCES `student`(`id`),
-    FOREIGN KEY (`curriculum_id`) REFERENCES `curriculum`(`id`),
     FOREIGN KEY (`exam_id`) REFERENCES `exam`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -135,7 +134,6 @@ CREATE TABLE `class_score` (
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`class_id`) REFERENCES `class`(`id`),
-    FOREIGN KEY (`curriculum_id`) REFERENCES `curriculum`(`id`),
     FOREIGN KEY (`exam_id`) REFERENCES `exam`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
