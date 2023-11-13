@@ -51,7 +51,7 @@ CREATE TABLE `teacher` (
     `school_id` BIGINT(20) UNSIGNED NOT NULL,
     `class_id` BIGINT(20) UNSIGNED NOT NULL,
     `account_id` BIGINT(20) UNSIGNED NOT NULL,
-    `admin` TINYINT UNSIGNED NOT NULL DEFAULT '0',
+    `is_admin` TINYINT UNSIGNED NOT NULL DEFAULT '0',
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -62,7 +62,6 @@ CREATE TABLE `teacher` (
 CREATE TABLE `curriculum` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
-    `subject` SMALLINT UNSIGNED NOT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
@@ -115,7 +114,6 @@ CREATE TABLE `exam_curriculum` (
 CREATE TABLE `student_score` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
     `student_id` BIGINT(20) UNSIGNED NOT NULL,
-    `curriculum_id` BIGINT(20) UNSIGNED NOT NULL,
     `exam_id` BIGINT(20) UNSIGNED NOT NULL,
     `score` TINYINT UNSIGNED NOT NULL,
     `accuracy_rate` TINYINT UNSIGNED NOT NULL,
@@ -123,6 +121,20 @@ CREATE TABLE `student_score` (
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`student_id`) REFERENCES `student`(`id`),
+    FOREIGN KEY (`curriculum_id`) REFERENCES `curriculum`(`id`),
+    FOREIGN KEY (`exam_id`) REFERENCES `exam`(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `class_score` (
+    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `class_id` BIGINT(20) UNSIGNED NOT NULL,
+    `exam_id` BIGINT(20) UNSIGNED NOT NULL,
+    `score` TINYINT UNSIGNED NOT NULL,
+    `accuracy_rate` TINYINT UNSIGNED NOT NULL,
+    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`class_id`) REFERENCES `class`(`id`),
     FOREIGN KEY (`curriculum_id`) REFERENCES `curriculum`(`id`),
     FOREIGN KEY (`exam_id`) REFERENCES `exam`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -170,9 +182,9 @@ CREATE TABLE `problem_option` (
 CREATE TABLE `answer` (
     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
     `problem_id` BIGINT(20) UNSIGNED NOT NULL,
+    `exam_id` BIGINT(20) UNSIGNED NOT NULL,
     `student_id` BIGINT(20) UNSIGNED NOT NULL,
     `answer_text` text,
-    `answer_id` BIGINT(20) UNSIGNED,
     `solve_second` int NOT NULL,
     `is_correct` TINYINT UNSIGNED NOT NULL,
     `is_descriptive` TINYINT UNSIGNED NOT NULL,
@@ -180,8 +192,8 @@ CREATE TABLE `answer` (
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`problem_id`) REFERENCES `problem`(`id`),
-    FOREIGN KEY (`student_id`) REFERENCES `student`(`id`),
-    FOREIGN KEY (`answer_id`) REFERENCES `problem_option`(`id`)
+    FOREIGN KEY (`exam_id`) REFERENCES `exam`(`id`),
+    FOREIGN KEY (`student_id`) REFERENCES `student`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `answer_advise` (
